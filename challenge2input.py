@@ -50,18 +50,18 @@ with con:
         if (response < 1 or response > 12):
           print("Error: Invalid Month")
 
-    cur.execute("SELECT mon FROM month where num = ?", (response,))
-    con.commit
+    #cur.execute("SELECT mon FROM month where num = ?", (response,))
+    #con.commit
 
-    row1 = cur.fetchone()
-    print row1
+    #row1 = cur.fetchone()
+    #print row1
 
-    inp =''.join(row1)
-    print(inp)
+    #inp =''.join(row1)
+    #print(inp)
     #val = ()
  
-    cur.execute("SELECT weather.city, cities.state, year, warm_month, cold_month, average_high FROM weather JOIN cities ON weather.city = cities.city where warm_month = %r " %(inp))
-
+    cur.execute("SELECT weather.city, cities.state, year, warm_month, cold_month, average_high FROM weather JOIN month on weather.warm_month = month.mon JOIN cities ON weather.city = cities.city where month.mon = ?", (response,))
+    #con.commit
 
     rows = cur.fetchall()
     cols = [desc[0] for desc in cur.description]
