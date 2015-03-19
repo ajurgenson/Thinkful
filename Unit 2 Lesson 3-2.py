@@ -1,7 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-
-df = pd.DataFrame
+import collections
 
 loansData = pd.read_csv('https://spark-public.s3.amazonaws.com/dataanalysis/loansData.csv')
 
@@ -11,33 +10,22 @@ rateclean[0:5]
 lengthclean = loansData['Loan.Length'][0:5].map(lambda x: int(x.rstrip(' months')))
 lengthclean[0:5]
 
-ficoclean = loansData['FICO.Range'][0:5].map(lambda x: x.split('-'))
-ficoclean[0:5]
+loansData['FICO.Score'] = loansData['FICO.Range'].astype(str)
+print loansData['FICO.Score'][0:5]
 
-ficoclean = ficoclean.map(lambda x: [int(n) for n in x])
-ficoclean[0:5]
+loans_list = loansData['FICO.Score'].tolist()
 
+FICO = []
+for array in range(len(loans_list)):
+    loan = loans_list[array].split("-")  # Split each sub-array on '-'
+    FICO.append(int(loan[0]))
 
+loansData['FICO.Score'] = FICO
 
-# ficoclean.compress([:,1, out])
-
-# things = ficoclean.keys()
-
-# serieal = pd.series(ficoclean[name][:,1] for name in things)
-
-
-# x=0
-# while x < 5:
-# 	ficotest.append(ficoclean.values[x][0])
-# 	x = x+1
-
-# print(ficotest)
-
-# ficoclean.values[4][0]
-
-# plt.figure()
-# p = ficoclean[0:5].hist()
-# plt.show()
+# Plot histogram
+plt.figure()
+p = loansData['FICO.Score'][0:5].hist()
+plt.show()
 
 a = pd.scatter_matrix(loansData, alpha=0.05, figsize=(10,10))
 
