@@ -21,7 +21,7 @@ loanamt = loansData['Amount.Requested']
 fico = loansData['FICO.Score']
 
 s = pd.Series(loansData['Interest.Rate'])
-test = s <= 12
+test = s.map(lambda num: num <= 12)
 
 intercept = 1.0
 
